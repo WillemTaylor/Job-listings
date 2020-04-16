@@ -1,29 +1,36 @@
 <template>
   <div id="app">
     <Header />
-    <div class="tile">
+    <div class="tile" v-for="tile in data" :key="tile.data">
       <div class="info-container">
         <div>
           <img src="./images/photosnap.svg" />
         </div>
         <div>
-          <h4>Photosnap</h4>
-          <div class="new-tag">
+          <h4>{{ tile.company }}</h4>
+          <div v-if="tile.new" class="new-tag">
             <p>NEW!</p>
           </div>
-          <div class="featured-tag">
+          <div v-if="tile.featured" class="featured-tag">
             <p>FEATURED</p>
           </div>
-          <h3>Senior Frontend Developer</h3>
-          <p>1d ago &bull; Full Time &bull; USA Only</p>
+          <h3>{{ tile.position }}</h3>
+          <p>
+            {{ tile.postedAt }} &bull; {{ tile.contract }} &bull;
+            {{ tile.location }}
+          </p>
           <hr class="desktop-hide" />
         </div>
       </div>
       <div class="filters">
-        <h4>role</h4>
-        <h4>level</h4>
-        <h4>languages</h4>
-        <h4>tools</h4>
+        <h4>{{ tile.role }}</h4>
+        <h4>{{ tile.level }}</h4>
+        <div v-for="lang in tile.languages" :key="lang.languages">
+          <h4>{{ lang }}</h4>
+        </div>
+        <div v-for="tool in tile.tools" :key="tool.tools">
+          <h4>{{ tool }}</h4>
+        </div>
       </div>
     </div>
   </div>
