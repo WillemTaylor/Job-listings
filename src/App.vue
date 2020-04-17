@@ -1,10 +1,23 @@
 <template>
   <div id="app">
     <Header />
+    <div v-if="filter" class="tile keywords">
+      <div v-if="showFilterDashboard" class="filters">
+        <div v-if="role">
+          <h4>{{ role }}</h4>
+          <div @click="handleRemoveFilter">&#10006;</div>
+        </div>
+        <div v-if="level">
+          <h4>{{ level }}</h4>
+          <div @click="handleRemoveFilter">&#10006;</div>
+        </div>
+      </div>
+      <h5 @click="removeFilterDashboard">Clear</h5>
+    </div>
     <div class="tile" v-for="tile in data" :key="tile.data">
       <div class="info-container">
         <div>
-          <img src="./images/photosnap.svg" />
+          <img :src="require(`${tile.logo}`)" />
         </div>
         <div>
           <h4>{{ tile.company }}</h4>
@@ -23,8 +36,12 @@
         </div>
       </div>
       <div class="filters">
-        <h4>{{ tile.role }}</h4>
-        <h4>{{ tile.level }}</h4>
+        <div>
+          <h4 @click="handleRoleFilter">{{ tile.role }}</h4>
+        </div>
+        <div>
+          <h4 @click="handleLevelFilter">{{ tile.level }}</h4>
+        </div>
         <div v-for="lang in tile.languages" :key="lang.languages">
           <h4>{{ lang }}</h4>
         </div>
@@ -47,8 +64,35 @@ export default {
   },
   data() {
     return {
-      data: json
+      data: json,
+      filter: false,
+      showFilterDashboard: true,
+      role: "",
+      level: ""
     };
+  },
+  mounted() {
+    if (this.roleFilter === "" && this.levelFilter === "") {
+      this.showFilterDashboard = false;
+    }
+  },
+  methods: {
+    removeFilterDashboard() {
+      this.role = "";
+      this.level = "";
+      this.filter = false;
+    },
+    handleRemoveFilter() {
+      event.target.parentElement.remove();
+    },
+    handleRoleFilter() {
+      this.role = event.target.innerHTML;
+      this.filter = true;
+    },
+    handleLevelFilter() {
+      this.level = event.target.innerHTML;
+      this.filter = true;
+    }
   }
 };
 </script>

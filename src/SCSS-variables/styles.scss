@@ -30,8 +30,43 @@ body {
   height: fit-content;
 }
 
+.keywords {
+  padding: 20px 0 !important;
+  box-shadow: 1px 9px 15px #b2bdbd !important;
+  position: relative;
+  bottom: 85px;
+  margin-bottom: -80px !important;
+
+  .filters {
+    margin: 5px 0 0 20px !important;
+
+    div {
+      h4 {
+        margin-bottom: 0 !important;
+        padding: 0 15px !important;
+        line-height: 35px;
+        cursor: unset !important;
+
+        &:hover {
+          color: hsl(180, 29%, 50%) !important;
+          background-color: hsl(180, 52%, 96%) !important;
+        }
+      }
+    }
+  }
+
+  h5 {
+    position: absolute;
+    right: 20px;
+    bottom: 4px;
+    color: hsl(180, 29%, 50%);
+    font-size: 1em;
+    cursor: pointer;
+  }
+}
+
 .tile {
-  width: 85%;
+  width: 80%;
   margin: 40px auto;
   background: white;
   border-radius: 10px;
@@ -43,7 +78,6 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 80%;
     padding: 15px 0;
   }
 
@@ -96,6 +130,11 @@ body {
 
     h3 {
       color: black;
+      cursor: pointer;
+
+      &:hover {
+        color: hsl(180, 29%, 50%);
+      }
     }
 
     hr {
@@ -128,12 +167,38 @@ body {
       margin: 50px 20px 0 0;
     }
 
-    h4 {
-      border-radius: 5px;
-      background: hsl(180, 52%, 96%);
-      color: hsl(180, 29%, 50%);
-      margin: 0 10px 20px 0;
-      padding: 10px 15px;
+    div {
+      display: inline-flex;
+
+      h4 {
+        border-radius: 5px;
+        background: hsl(180, 52%, 96%);
+        color: hsl(180, 29%, 50%);
+        margin: 0 10px 20px 0;
+        padding: 10px 15px;
+        cursor: pointer;
+
+        &:hover {
+          color: hsl(180, 52%, 96%);
+          background: hsl(180, 29%, 50%);
+        }
+      }
+
+      div {
+        font-size: 22px;
+        background: hsl(180, 29%, 50%);
+        color: white;
+        padding: 5px 5px;
+        border-radius: 5px;
+        height: fit-content;
+        position: relative;
+        right: 16px;
+
+        &:hover {
+          background: hsl(180, 14%, 20%);
+          cursor: pointer;
+        }
+      }
     }
   }
 }
