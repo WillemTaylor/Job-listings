@@ -2,22 +2,22 @@
   <div id="app">
     <Header />
     <div v-if="filter" class="tile keywords">
-      <div v-if="showFilterDashboard" class="filters">
-        <div v-if="!removeRoleClicked && role">
+      <div class="filters">
+        <div v-if="!removeClicked && role">
           <h4>{{ role }}</h4>
-          <div @click="handleRole">&#10006;</div>
+          <div id="role" @click="handleRemoveFilter">&#10006;</div>
         </div>
-        <div v-if="!removeLevelClicked && level">
+        <div v-if="!removeClicked && level">
           <h4>{{ level }}</h4>
-          <div @click="handleLevel">&#10006;</div>
+          <div id="level" @click="handleRemoveFilter">&#10006;</div>
         </div>
-        <div v-if="!removeLanguageClicked && language">
+        <div v-if="!removeClicked && language">
           <h4>{{ language }}</h4>
-          <div @click="handleLanguage">&#10006;</div>
+          <div id="language" @click="handleRemoveFilter">&#10006;</div>
         </div>
-        <div v-if="!removeToolClicked && tool">
+        <div v-if="!removeClicked && tool">
           <h4>{{ tool }}</h4>
-          <div @click="handleTool">&#10006;</div>
+          <div id="tool" @click="handleRemoveFilter">&#10006;</div>
         </div>
       </div>
       <h5 @click="removeFilterDashboard">Clear</h5>
@@ -45,16 +45,16 @@
       </div>
       <div class="filters">
         <div>
-          <h4 @click="handleRoleFilter">{{ tile.role }}</h4>
+          <h4 id="role" @click="handleClickFilter">{{ tile.role }}</h4>
         </div>
         <div>
-          <h4 @click="handleLevelFilter">{{ tile.level }}</h4>
+          <h4 id="level" @click="handleClickFilter">{{ tile.level }}</h4>
         </div>
         <div v-for="lang in tile.languages" :key="lang.languages">
-          <h4 @click="handleLanguageFilter">{{ lang }}</h4>
+          <h4 id="language" @click="handleClickFilter">{{ lang }}</h4>
         </div>
         <div v-for="tool in tile.tools" :key="tool.tools">
-          <h4 @click="handleToolFilter">{{ tool }}</h4>
+          <h4 id="tool" @click="handleClickFilter">{{ tool }}</h4>
         </div>
       </div>
     </div>
@@ -74,11 +74,7 @@ export default {
     return {
       data: json,
       filter: false,
-      showFilterDashboard: true,
-      removeRoleClicked: false,
-      removeLevelClicked: false,
-      removeLanguageClicked: false,
-      removeToolClicked: false,
+      removeClicked: false,
       role: "",
       level: "",
       language: "",
@@ -87,25 +83,26 @@ export default {
   },
   computed: {
     handleShowTiles() {
-      if (this.filter) {
-        if (this.role) {
-          return this.data.filter(x => x.role === this.role);
-        }
-        if (this.level) {
-          return this.data.filter(x => x.level === this.level);
-        }
-        if (this.language) {
-          const arr = this.data.filter(x => typeof x.languages === "object");
-          return arr.filter(x =>
-            x.languages.some(x => x.includes(this.language))
+      let role = this.role;
+      let level = this.level;
+      let language = this.language;
+      let tool = this.tool;
+
+      if (role || level || language || tool) {
+        return this.data
+          .filter(arr => (role.length > 0 ? arr.role === role : arr))
+          .filter(arr => (level.length > 0 ? arr.level === level : arr))
+          .filter(arr => (language ? typeof arr.languages === "object" : arr))
+          .filter(arr =>
+            language.length > 0
+              ? arr.languages.some(x => x.includes(language))
+              : arr
+          )
+          .filter(arr => (tool ? typeof arr.tools === "object" : arr))
+          .filter(arr =>
+            tool.length > 0 ? arr.tools.some(x => x.includes(tool)) : arr
           );
-        }
-        if (this.tool) {
-          const arr = this.data.filter(x => typeof x.tools === "object");
-          return arr.filter(x => x.tools.some(x => x.includes(this.tool)));
-        }
-      }
-      return this.data;
+      } else return this.removeFilterDashboard();
     }
   },
   methods: {
@@ -115,65 +112,36 @@ export default {
       this.language = "";
       this.tool = "";
       this.filter = false;
+      return this.data;
     },
-    handleRole() {
-      this.removeRoleClicked = true;
-      if (
-        this.removeLevelClicked &&
-        this.removeLanguageClicked &&
-        this.removeToolClicked
-      ) {
-        this.removeFilterDashboard();
-      }
+    handleRemoveFilter() {
+      let id = event.target.id;
+
+      id === "role"
+        ? (this.role = "")
+        : id === "level"
+        ? (this.level = "")
+        : id === "language"
+        ? (this.language = "")
+        : id === "tool"
+        ? (this.tool = "")
+        : "";
+      this.handleShowTiles;
     },
-    handleLevel() {
-      this.removeLevelClicked = true;
-      if (
-        this.removeRoleClicked &&
-        this.removeLanguageClicked &&
-        this.removeToolClicked
-      ) {
-        this.removeFilterDashboard();
-      }
-    },
-    handleLanguage() {
-      this.removeLanguageClicked = true;
-      if (
-        this.removeRoleClicked &&
-        this.removeLevelClicked &&
-        this.removeToolClicked
-      ) {
-        this.removeFilterDashboard();
-      }
-    },
-    handleTool() {
-      this.removeToolClicked = true;
-      if (
-        this.removeRoleClicked &&
-        this.removeLevelClicked &&
-        this.removeLanguageClicked
-      ) {
-        this.removeFilterDashboard();
-      }
-    },
-    handleRoleFilter() {
-      this.role = event.target.innerHTML;
-      this.removeRoleClicked = false;
-      this.filter = true;
-    },
-    handleLevelFilter() {
-      this.level = event.target.innerHTML;
-      this.removeLevelClicked = false;
-      this.filter = true;
-    },
-    handleLanguageFilter() {
-      this.language = event.target.innerHTML;
-      this.removeLanguageClicked = false;
-      this.filter = true;
-    },
-    handleToolFilter() {
-      this.tool = event.target.innerHTML;
-      this.removeToolClicked = false;
+    handleClickFilter() {
+      let result = event.target.innerHTML;
+      let id = event.target.id;
+
+      id === "role"
+        ? (this.role = result)
+        : id === "level"
+        ? (this.level = result)
+        : id === "language"
+        ? (this.language = result)
+        : id === "tool"
+        ? (this.tool = result)
+        : "";
+      this.removeClicked = false;
       this.filter = true;
     }
   }
