@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import HeaderMobile from "../images/header-mobile";
-import HeaderDesktop from "../images/header-desktop";
+import HeaderMobile from "./images/header-mobile";
+import HeaderDesktop from "./images/header-desktop";
 
 export default {
   name: "Header",
