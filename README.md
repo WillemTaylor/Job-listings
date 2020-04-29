@@ -3,6 +3,8 @@
 This front-end coding challenge was taken from
 https://www.frontendmentor.io/challenges/job-listings-with-filtering-ivstIPCt.
 
+Completed project deployed to https://job-listings.netlify.app/
+
 ### The Challenge
 
 Within this repo, I have created a job listing page and get it looking as close to the design as possible. I used Vue.js framework, with a mixture of SCSS and HTML to achieve the styling of this design, and javascript to acheive the functionality.
